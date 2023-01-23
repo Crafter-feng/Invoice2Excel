@@ -217,7 +217,7 @@ if __name__ == '__main__':
         if opt in ['-p', '--path']:
             IN_PATH = arg
         elif opt in ['--test', '-t']:
-            IN_PATH = 'example1'
+            IN_PATH = 'example'
         elif opt in ['--save', '-s']:
             OUT_PATH = arg
     # run programme
