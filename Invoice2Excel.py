@@ -226,15 +226,25 @@ if __name__ == '__main__':
     num = len(files_path)
     print(f'total {num} file(s) to parse.\n{"*"*50}')
     data = pd.DataFrame()
+    result = []
     for index, file_path in enumerate(files_path):
         print(f'{index+1}/{num}({round((index+1)/num*100, 2)}%)\t{file_path}')
         extractor = Extractor(file_path)
         try:
             d = extractor.extract()
             data = pd.concat([data, d], axis=0, sort=False, ignore_index=True)
+            result.append(["succeed", file_path])
         except Exception as e:
+            result.append(["fail", file_path])
             print('file error:', file_path, '\n', e)
+            
     print(f'{"*"*50}\nfinish parsing, save data to {OUT_PATH}')
-    data.to_excel(OUT_PATH, sheet_name='data')
+
+    result = pd.DataFrame(result, columns=["解析状态" , "文件路径"])
+    writer = pd.ExcelWriter(OUT_PATH)
+    data.to_excel(writer,'data')
+    result.to_excel(writer,'result')
+    writer.save()
+
     print(f'{"*" * 50}\nALL DONE. THANK YOU FOR USING MY PROGRAMME. GOODBYE!\n{"*"*50}')
 
