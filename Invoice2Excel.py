@@ -229,11 +229,11 @@ if __name__ == '__main__':
     for index, file_path in enumerate(files_path):
         print(f'{index+1}/{num}({round((index+1)/num*100, 2)}%)\t{file_path}')
         extractor = Extractor(file_path)
-        #try:
-        d = extractor.extract()
-        data = pd.concat([data, d], axis=0, sort=False, ignore_index=True)
-        #except Exception as e:
-        #    print('file error:', file_path, '\n', e)
+        try:
+            d = extractor.extract()
+            data = pd.concat([data, d], axis=0, sort=False, ignore_index=True)
+        except Exception as e:
+            print('file error:', file_path, '\n', e)
     print(f'{"*"*50}\nfinish parsing, save data to {OUT_PATH}')
     data.to_excel(OUT_PATH, sheet_name='data')
     print(f'{"*" * 50}\nALL DONE. THANK YOU FOR USING MY PROGRAMME. GOODBYE!\n{"*"*50}')
