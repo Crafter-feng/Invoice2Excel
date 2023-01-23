@@ -87,19 +87,19 @@ class Extractor(object):
 
             hlines_pack.append(arr)
             last_pos = pos
-            
-        for i,line in enumerate(hlines_pack):
-            hlines_pack[i].sort(key=lambda t: t['top'])
         
-        r = hlines_pack[0]
-        hinfo = {}
-        # hinfo["销售方"] =  {'x0': r[0]['x0'],'x1': r[0]['x1'],'top': r[0]['top'],'bottom': r[2]['bottom']}
-        # r = hlines_pack[0]        
-        # hinfo["购买方"] =  {'x0': r[3]['x0'],'x1': r[3]['x1'],'top': r[3]['top'],'bottom': r[5]['bottom']}       
-        # r = hlines_pack[1]  
-        hinfo["密码区"] =  {'x0': r[0]['x0'],'x1': r[0]['x1'],'top': r[0]['top'],'bottom': r[2]['bottom']}          
-        # r = hlines_pack[1]
-        # hinfo["备注"] =  {'x0': r[3]['x0'],'x1': r[3]['x1'],'top': r[3]['top'],'bottom': r[4]['bottom']}
+        hinfo = {}   
+
+        for line in hlines_pack:
+            line.sort(key=lambda t: t['top'])
+            t = "".join([ j['text'] for j in line])
+            for tx in ["购买方", "销售方", "密码区", "备注"] :
+                x = t.find(tx)
+                if x >= 0:  
+                    idx = x+len(tx)-1
+                    if len(line) <= idx:
+                        idx = -1
+                    hinfo[tx] =  {'x0': line[x]['x0'],'x1': line[x]['x1'],'top': line[x]['top'],'bottom': line[idx]['bottom']}
         
         lines_pack = []
         last_pos = None
